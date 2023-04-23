@@ -24,45 +24,13 @@ module tb (
         $dumpfile ("tb.vcd");
         $dumpvars (0, tb);
         #1;
-
-	  	// Initialize inputs
-		clk = 0;
-		rst = 1;
-		rx = 1;
-//		data = 9'b000000101;
-//		data = 9'b000000010;   // Read SIGNATURE Byte
-		data = 9'b000001000;   // Read SIGNATURE Byte		
-
-		// Reset
-		#10 rst = 0;
-
-		// Wait for reset to complete
-		#100;
-
-		for (bit_cnt = 0; bit_cnt < 9; bit_cnt = bit_cnt + 1) begin
-			rx = data[8-bit_cnt];
-		    #10;
-		end
-		rx = 1;
-		#100;
-
-/*		data = 9'b011110000;
-		for (bit_cnt = 0; bit_cnt < 9; bit_cnt = bit_cnt + 1) begin
-			rx = data[8-bit_cnt];
-		    #10;
-		end
-
-		rx = 1;
-		#20;
-*/
     end
-
-	always #5 clk = ~clk;
 
     // wire up the inputs and outputs
     wire [7:0] inputs = {6'b0, rx, rst, clk};
     wire [7:0] outputs;
     assign segments = outputs[6:0];
+	assign tx = outputs[7];
 
     // instantiate the DUT
     zl_uart zl_uart(
