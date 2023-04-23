@@ -1,11 +1,9 @@
 `default_nettype none
 
 module zl_uart (
-  io_in, io_out
+  input wire [7:0] io_in,
+  output wire [7:0] io_out
 );
-
-	input wire [7:0] io_in;
-	output wire [7:0] io_out;
 
 	parameter	[15:0]	C_SIGNATURE = 16'hDEDA;
 
@@ -75,6 +73,8 @@ module zl_uart (
 									obuffer <= reg1;
 								7'd3:
 									obuffer <= {1'b0, led_out};
+								7'd4:
+									obuffer <= {io_in[7:3], 3'd0};
 								default:;
 							endcase
 						end

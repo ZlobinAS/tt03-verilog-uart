@@ -30,7 +30,8 @@ module tb (
 		rst = 1;
 		rx = 1;
 //		data = 9'b000000101;
-		data = 9'b000000010;   // Read SIGNATURE Byte
+//		data = 9'b000000010;   // Read SIGNATURE Byte
+		data = 9'b000001000;   // Read SIGNATURE Byte		
 
 		// Reset
 		#10 rst = 0;

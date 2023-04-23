@@ -24,7 +24,7 @@ documentation:
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      Simple protocol allowin to receive two byte command first byte - address and r/w bit.
+      Simple UART based protocol.Two byte communication. First byte - address and r/w bit.
       Second byte - data to be written or readed data from internal registers.
       Uart works at input frequency so probably buadrate would be 12500 bit/s.
 
