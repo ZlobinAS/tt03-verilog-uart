@@ -30,6 +30,7 @@ documentation:
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
       After reset LEDs should show 3 horisontal segments.
+      
       Read transaction: first byte is send by host, device will reply with one data byte. List of implemented commands:
 
         1. Read 15:18 bits of signature: send 0x00, device will reply with 0xDA byte
@@ -39,12 +40,15 @@ documentation:
         3. Read internal register: send 0x04, device will reply with 0x00 byte (initial value of internal register is 0)
 
         4. Read led register: send 0x06, device will reply with 0x49 byte (initial value of led register is 0x49)
+    
+        5. Read status of input4-input7: send 0x08, device sill reply with byte containing state of the inputs.
 
       Write transaction: host should send two bytes first - command, second data:
 
         1. Write to internal register: send 0x05, send byte you want to write
 
         2. Write to LED register: send 0x07, send byte you want to write to LED register
+
 # A description of what the inputs do
   inputs:               
     - clock
