@@ -18,27 +18,37 @@ yaml_version: 3.0
 # Here is a great example: https://github.com/davidsiaw/tt02-davidsiaw-stackcalc/blob/38c5647f83aad2aec675d566aa3d67b98f0aac81/info.yaml
 documentation: 
   author:       "Aleksandr Zlobin"
-  title:        "Simple uart interface"
+  title:        "Simple uART interface"
   language:     "Verilog"
-  description:  "Uart interface with internal R/W ability to 8 bit register, two bytes of signature and register for led control"
+  description:  "UART interface with access to internal registers"
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      Simple UART based protocol.Two byte communication. First byte - address and r/w bit.
-      Second byte - data to be written or readed data from internal registers.
-      Uart works at input frequency so probably buadrate would be 12500 bit/s.
+      UART based protocol.Each transaction consists of two bytes. First byte - address and r/w bit.
+      Second byte - data to be written in case of write transaction or data readed from internal registers incase of read transaction.
+      Module works at input frequency so buadrate would be 12500 bit/s.
 
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
-      After reset led should show 3 horisontal segments. UART communication protocol:
-        Read transaction: first byte is send by host, device will reply with one data byte. List of implemented commands:
+      After reset LEDs should show 3 horisontal segments. UART communication protocol:
+
+      Read transaction: first byte is send by host, device will reply with one data byte. List of implemented commands:
+
         1. Read 15:18 bits of signature: send 0x00, device will reply with 0xDA byte
+
         2. Read 7:0 bits of signature: send 0x02, device will reply with 0xDE byte
+
         3. Read internal register: send 0x04, device will reply with 0xDE byte (initial value of internal register is 0)
+
         4. Read led register: send 0x06, device will reply with 0x49 byte (initial value of led register is 0x49)
-        Write transaction: host should send two bytes first - command, second data:
+
+        5. Read status of input4-input7: send 0x08, device sill reply with byte containing state of the inputs.
+
+      Write transaction: host should send two bytes first - command, second data:
+
         1. Write to internal register: send 0x05, any byte you want to write to internal register
+
         1. Write to led register: send 0x07, any byte you want to write to led register
 
 # A description of what the inputs do
@@ -46,11 +56,11 @@ documentation:
     - clock
     - reset
     - rx
-    - none
-    - none
-    - none
-    - none
-    - none
+    - input4
+    - input5
+    - input6
+    - input7
+    - input8
 # A description of what the outputs do
   outputs:
     - segment a
