@@ -6,9 +6,8 @@ project:
 # If using an HDL, set wokwi_id as 0 and uncomment and list your source files here. 
 # Source files must be in ./src and you must list each source file separately
   source_files:        
-    - counter.v
-    - decoder.v
-  top_module:  "seven_segment_seconds"      # put the name of your top module here, make it unique by prepending your github username
+    - zl_uart.v
+  top_module:  "zl_uart"      # put the name of your top module here, make it unique by prepending your github username
 
 # Keep a track of the submission yaml
 yaml_version: 3.0
@@ -18,27 +17,35 @@ yaml_version: 3.0
 #
 # Here is a great example: https://github.com/davidsiaw/tt02-davidsiaw-stackcalc/blob/38c5647f83aad2aec675d566aa3d67b98f0aac81/info.yaml
 documentation: 
-  author:       "Matt Venn"
-  title:        "7 segment seconds"
+  author:       "Aleksandr Zlobin"
+  title:        "Simple uart interface"
   language:     "Verilog"
-  description:  "Count up to 10, one second at a time."
+  description:  "Uart interface with internal R/W ability to 8 bit register, two bytes of signature and register for led control"
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      Uses a set of registers to divide the clock, and then some combinational logic
-      to convert from binary to decimal for the display.
+      Simple protocol allowin to receive two byte command first byte - address and r/w bit.
+      Second byte - data to be written or readed data from internal registers.
+      Uart works at input frequency so probably buadrate would be 12500 bit/s.
 
-      Puts a slower square wave output on output 7.
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
-      After reset, the counter should increase by one every second.
+      After reset led should show 3 horisontal segments. UART communication protocol:
+        Read transaction: first byte is send by host, device will reply with one data byte. List of implemented commands:
+        1. Read 15:18 bits of signature: send 0x00, device will reply with 0xDA byte
+        2. Read 7:0 bits of signature: send 0x02, device will reply with 0xDE byte
+        3. Read internal register: send 0x04, device will reply with 0xDE byte (initial value of internal register is 0)
+        4. Read led register: send 0x06, device will reply with 0x49 byte (initial value of led register is 0x49)
+        Write transaction: host should send two bytes first - command, second data:
+        1. Write to internal register: send 0x05, any byte you want to write to internal register
+        1. Write to led register: send 0x07, any byte you want to write to led register
 
 # A description of what the inputs do
   inputs:               
     - clock
     - reset
-    - none
+    - rx
     - none
     - none
     - none
@@ -53,12 +60,12 @@ documentation:
     - segment e
     - segment f
     - segment g
-    - slow clock output
+    - tx
 
 # The following fields are optional
-  tag:          "timer, test"      # comma separated list of tags: test encryption, experiment, clock, animation, utility, industrial, pwm, fpga, alu, microprocessor, risc, riscv, sensor, signal generator, fft, filter, music, bcd, sound, serial, timer, random number generator, calculator, decoder, counter, puzzle, multiplier, game, oscillator,
+  tag:          "uart, test"      # comma separated list of tags: test encryption, experiment, clock, animation, utility, industrial, pwm, fpga, alu, microprocessor, risc, riscv, sensor, signal generator, fft, filter, music, bcd, sound, serial, timer, random number generator, calculator, decoder, counter, puzzle, multiplier, game, oscillator,
   external_hw:  ""      # Describe any external hardware needed
-  discord:      "mattvenn#1907"      # Your discord handle, used for communication and automatically assigning tapeout role after a submission
+  discord:      "Zloy#3870"      # Your discord handle, used for communication and automatically assigning tapeout role after a submission
   doc_link:     ""      # URL to longer form documentation, eg the README.md in your repository
-  clock_hz:     1000       # Clock frequency in Hz (if required)
+  clock_hz:     12500   # Clock frequency in Hz (if required)
   picture:      ""      # relative path to a picture in your repository
