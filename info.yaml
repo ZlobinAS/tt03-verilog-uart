@@ -18,15 +18,14 @@ yaml_version: 3.0
 # Here is a great example: https://github.com/davidsiaw/tt02-davidsiaw-stackcalc/blob/38c5647f83aad2aec675d566aa3d67b98f0aac81/info.yaml
 documentation: 
   author:       "Aleksandr Zlobin"
-  title:        "Simple uART interface"
+  title:        "Simple UART interface"
   language:     "Verilog"
   description:  "UART interface with access to internal registers"
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
       Each transaction consists of two bytes. First byte - address and r/w bit.
-      Second byte - data to be written in case of write transaction or data readed from internal registers incase of read transaction.
-
+      Second byte - data to be written (write transaction), or data read from internal registers (read transaction).
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
@@ -41,13 +40,11 @@ documentation:
 
         4. Read led register: send 0x06, device will reply with 0x49 byte (initial value of led register is 0x49)
 
-        5. Read status of input4-input7: send 0x08, device sill reply with byte containing state of the inputs.
-
       Write transaction: host should send two bytes first - command, second data:
 
-        1. Write to internal register: send 0x05, send byte you want to write to internal register
+        1. Write to internal register: send 0x05, send byte you want to write
 
-        1. Write to led register: send 0x07, send byte you want to write to led register
+        2. Write to LED register: send 0x07, send byte you want to write to LED register
 # A description of what the inputs do
   inputs:               
     - clock
