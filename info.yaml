@@ -47,9 +47,9 @@ documentation:
 
       Write transaction: host should send two bytes first - command, second data:
 
-        1. Write to internal register: send 0x05, any byte you want to write to internal register
+        1. Write to internal register: send 0x05, send any byte you want to write to internal register
 
-        1. Write to led register: send 0x07, any byte you want to write to led register
+        1. Write to led register: send 0x07, send any byte you want to write to led register
 
 # A description of what the inputs do
   inputs:               
